@@ -6,8 +6,7 @@ import java.util.Deque;
 import model.Facade;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import view.UserInterface;
-import view.View;
+import view.*;
 
 /**
  * Calculator implementation. View aspect will be injected to this model. This
