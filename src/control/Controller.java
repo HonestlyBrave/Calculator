@@ -22,7 +22,7 @@ public class Controller {
      */
     private static final ApplicationContext CTX =
             new ClassPathXmlApplicationContext(
-                    "classpath:/main/resources/beans.xml");
+                    "classpath:/resources/beans.xml");
 
     /**
      * View Class object.
