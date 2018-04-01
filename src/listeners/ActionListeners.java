@@ -46,7 +46,7 @@ public class ActionListeners implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() instanceof JButton) {
+        if (e.getSource().getClass().equals(JButton.class)) {
             String x = e.getActionCommand();
             int index = Integer.parseInt(x);
             commands[index].execute();

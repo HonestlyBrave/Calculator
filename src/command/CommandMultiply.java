@@ -16,8 +16,8 @@ public class CommandMultiply implements Command {
         if (Facade.operatorNotAllowed()) {
             return;
         }
-        Controller.updateDisplay(" ˣ ");
         Facade.multiply();
+        Controller.updateDisplay(" ˣ ");
         Controller.pushComand(this);
     }
 

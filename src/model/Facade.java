@@ -295,6 +295,10 @@ public class Facade {
         synchMachineDisplay();
 
         if (validateNewVal()) {
+            if (newInputAfterClosedEquation()) {
+                addMultiplySignAfterLastEquation();
+            }
+
             PRIMARY.addInput();
         }
 

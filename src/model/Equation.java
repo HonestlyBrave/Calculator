@@ -233,45 +233,17 @@ public class Equation implements Element {
             check = Simplify.calculateAddSubtract(EQUATIONITEMS);
         }
 
-        BaseExpression lastExp = null;
-        Equation equation = null;
-        Scalar scalar = null;
-        try {
-            lastExp = (BaseExpression) EQUATIONITEMS.get(0);
-        } catch (ClassCastException ex) {
-            try {
-                scalar = (Scalar) EQUATIONITEMS.get(0);
-            } catch (ClassCastException s) {
-                equation = (Equation) EQUATIONITEMS.get(0);
-            }
-        }
-
-        return (lastExp != null) ? lastExp.evaluate() : (scalar != null)
-                ? scalar.evaluate() : equation.evaluate();
+        return getLastElementItem().evaluate();
     }
 
     /**
      * Text representation of the last item in the Equation list.
      *
-     * @return last element's evaluated result
+     * @return last element's evaluated result as a string
      */
     @Override
     public String toString() {
-        BaseExpression lastExp = null;
-        Equation equation = null;
-        Scalar scalar = null;
-        try {
-            lastExp = (BaseExpression) EQUATIONITEMS.get(0);
-        } catch (ClassCastException ex) {
-            try {
-                scalar = (Scalar) EQUATIONITEMS.get(0);
-            } catch (ClassCastException s) {
-                equation = (Equation) EQUATIONITEMS.get(0);
-            }
-        }
-
-        return (lastExp != null) ? lastExp.toString() : (scalar != null)
-                ? scalar.toString() : equation.toString();
+        return getLastElementItem().toString();
     }
 
     /**
@@ -375,6 +347,14 @@ public class Equation implements Element {
     }
 
     /**
+     *
+     * @return Element
+     */
+    public Element getLastElementItem() {
+        return (Element) getLastItem();
+    }
+
+    /**
      * Check whether any Equation is empty.
      *
      * @return boolean
@@ -403,7 +383,7 @@ public class Equation implements Element {
         if (itemListIsEmpty()) {
             return false;
         }
-        return (getLastItem() instanceof Equation);
+        return (getLastItem().getClass().equals(Equation.class));
     }
 
     /**
@@ -415,7 +395,8 @@ public class Equation implements Element {
         if (itemListIsEmpty()) {
             return false;
         }
-        return (getLastItem() instanceof Operator);
+        return (getLastItem().getClass()
+                .getInterfaces()[0].equals(Operator.class));
     }
 
     /**
@@ -437,7 +418,7 @@ public class Equation implements Element {
         if (itemListIsEmpty()) {
             return false;
         }
-        return (getLastItem() instanceof Scalar);
+        return (getLastItem().getClass().equals(Scalar.class));
     }
 
     /**

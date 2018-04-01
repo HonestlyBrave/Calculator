@@ -185,7 +185,7 @@ public class UserInterface extends JFrame implements View {
     private void setListeneres() {
         // Add listeners to components in a specific panel.
         for (Component comp : jpSecond.getComponents()) {
-            if (comp instanceof JButton) {
+            if (comp.getClass().equals(JButton.class)) {
                 ((JButton) comp).addActionListener(actionListeners);
                 ((JButton) comp).addKeyListener(keyListeners);
             }

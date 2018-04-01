@@ -16,8 +16,8 @@ public class CommandSubtract implements Command {
         if (Facade.operatorNotAllowed()) {
             return;
         }
-        Controller.updateDisplay(" - ");
         Facade.subtract();
+        Controller.updateDisplay(" - ");
         Controller.pushComand(this);
     }
 

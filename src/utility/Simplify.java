@@ -12,19 +12,22 @@ import model.operator.*;
 public class Simplify implements Utility {
 
     /**
-     * Combine multiply/divide binomial expressions into a BaseExpression then
-     * update the ArrayList.
+     * Find multiply/divide operators to create BaseExpression elements then
+     * update the List of objects.
      *
-     * @param elementsList list of elements to simplify
+     * @param elementsList list of elements and operators to simplify
      * @return boolean
      */
     public static boolean calculateMultiplyDivide(List<Object> elementsList) {
         for (Object obj : elementsList) {
-            if (obj instanceof Multiply || obj instanceof Divide) {
+            if (obj.getClass().equals(Multiply.class)
+                    || obj.getClass().equals(Divide.class)) {
                 int index = elementsList.indexOf(obj);
+
                 BaseExpression tmp = new BaseExpression((Element) elementsList
                         .get(index - 1), (Operator) elementsList.get(index),
                         (Element) elementsList.get(index + 1));
+
                 elementsList.add(index - 1, tmp);
                 elementsList.remove(index);
                 elementsList.remove(index);
@@ -36,19 +39,22 @@ public class Simplify implements Utility {
     }
 
     /**
-     * Combine add/subtract binomial expressions into a BaseExpression then
-     * update the ArrayList.
+     * Find add/subtract operators to create BaseExpression elements then update
+     * the List of objects.
      *
-     * @param elementsList list of elements to simplify
+     * @param elementsList list of elements and operators to simplify
      * @return boolean
      */
     public static boolean calculateAddSubtract(List<Object> elementsList) {
         for (Object obj : elementsList) {
-            if (obj instanceof Add || obj instanceof Subtract) {
+            if (obj.getClass().equals(Add.class)
+                    || obj.getClass().equals(Subtract.class)) {
                 int index = elementsList.indexOf(obj);
+
                 BaseExpression tmp = new BaseExpression((Element) elementsList
                         .get(index - 1), (Operator) elementsList.get(index),
                         (Element) elementsList.get(index + 1));
+
                 elementsList.add(index - 1, tmp);
                 elementsList.remove(index);
                 elementsList.remove(index);
