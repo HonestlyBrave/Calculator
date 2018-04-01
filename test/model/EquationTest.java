@@ -858,21 +858,21 @@ public class EquationTest {
      * Test of nestedEquationEmpty method, of class Equation.
      */
     @Test
-    public void testAnyNestedEquationEmpty() {
-        System.out.println("Method anyNestedEquationEmpty : ");
+    public void testNestedEquationEmpty() {
+        System.out.println("Method nestedEquationEmpty : ");
 
         Equation instance = new Equation();
         instance.addItem(new Equation());
 
         boolean result = instance.nestedEquationEmpty();
 
-        assertTrue("AnyNestedEquationEmpty with empty equation failed.", result);
+        assertTrue("NestedEquationEmpty with empty equation failed.", result);
 
         instance.addItem(testScalar1);
 
         result = instance.nestedEquationEmpty();
 
-        assertFalse("AnyNestedEquationEmpty with non-empty equation failed.",
+        assertFalse("NestedEquationEmpty with non-empty equation failed.",
                 result);
 
         System.out.println("Complete.\n");
@@ -966,6 +966,68 @@ public class EquationTest {
         result = instance.hasFirstOperand();
 
         assertTrue("HasFirstOperand with no operands failed.", result);
+
+        System.out.println("Complete.\n");
+    }
+
+    /**
+     * Test of addInput method, of class Equation.
+     */
+    @Test
+    public void testAddInput() {
+        System.out.println("Method addInput : ");
+
+        Equation instance = new Equation();
+        instance.setInput("");
+
+        boolean expResult = false;
+        boolean result = instance.addInput();
+
+        assertEquals("AddInput with no input failed.", expResult, result);
+
+        instance.setInput("123");
+
+        expResult = true;
+        result = instance.addInput();
+
+        assertEquals("AddInput with no input failed.", expResult, result);
+
+        System.out.println("Complete.\n");
+    }
+
+    /**
+     * Test of getLastElementItem method, of class Equation.
+     */
+    @Test
+    public void testGetLastElementItem() {
+        System.out.println("Method getLastElementItem : ");
+
+        Equation instance = new Equation();
+
+        Element expResult = null;
+        Element result = instance.getLastElementItem();
+
+        assertEquals("GetLastElementItem with no items failed.", expResult,
+                result);
+
+        instance.addItem(testScalar1);
+        instance.evaluate();
+
+        expResult = testScalar1;
+        result = instance.getLastElementItem();
+
+        assertEquals("GetLastElementItem with one scalar failed.", expResult,
+                result);
+
+        instance.addItem(testAdd);
+        instance.addItem(testScalar2);
+        instance.evaluate();
+
+        Class<BaseExpression> expClass = BaseExpression.class;
+        result = instance.getLastElementItem();
+
+        assertEquals("GetLastElementItem with one BaseExpression failed.",
+                expClass, result.getClass());
 
         System.out.println("Complete.\n");
     }
