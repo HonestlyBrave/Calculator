@@ -87,18 +87,18 @@ public class Controller {
     }
 
     /**
-     * Get the command collection.
+     * Get the executed commands collection.
      *
-     * @return list of commands for design pattern
+     * @return list of commands for undo operations
      */
     public static Deque<Command> getComands() {
         return comands;
     }
 
     /**
-     * Set a collection of commands.
+     * Set a collection of executed commands.
      *
-     * @param aComands list of existing commands for design pattern
+     * @param aComands list of existing commands for undo operations
      */
     public static void setComands(Deque<Command> aComands) {
         comands = aComands;
@@ -107,7 +107,7 @@ public class Controller {
     /**
      * Pop a command from the queue.
      *
-     * @return a command
+     * @return a command for undo operations
      */
     public static Command popComand() {
         return comands.pop();
@@ -116,7 +116,7 @@ public class Controller {
     /**
      * Push a command to the queue.
      *
-     * @param aComand one of existing commands for design pattern
+     * @param aComand save a command for undo operations
      */
     public static void pushComand(Command aComand) {
         comands.push(aComand);
