@@ -17,7 +17,7 @@ public class CommandClosePara implements Command {
             return;
         }
         Facade.closeParentheses();
-        Controller.updateDisplay(" )");
+        Facade.getView().updateDisplay(" )");
         Controller.pushComand(this);
     }
 

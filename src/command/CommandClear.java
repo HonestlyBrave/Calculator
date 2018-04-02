@@ -14,7 +14,7 @@ public class CommandClear implements Command {
     @Override
     public void execute() {
         Facade.clear();
-        Controller.setDisplay("");
+        Facade.getView().setDisplay("");
         Controller.pushComand(this);
     }
 

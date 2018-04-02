@@ -13,7 +13,7 @@ public class CommandOpenPara implements Command {
 
     @Override
     public void execute() {
-        Controller.updateDisplay("( ");
+        Facade.getView().updateDisplay("( ");
         Facade.openParentheses();
         Controller.pushComand(this);
     }

@@ -15,9 +15,9 @@ public class CommandDecimal implements Command {
     public void execute() {
         Facade.updateInput(".");
         if (Facade.RemoveAnswerFromDisplay()) {
-            Controller.setDisplay("");
+            Facade.getView().setDisplay("");
         }
-        Controller.updateDisplay(".");
+        Facade.getView().updateDisplay(".");
         Controller.pushComand(this);
     }
 

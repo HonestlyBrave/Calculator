@@ -17,7 +17,7 @@ public class CommandAdd implements Command {
             return;
         }
         Facade.add();
-        Controller.updateDisplay(" + ");
+        Facade.getView().updateDisplay(" + ");
         Controller.pushComand(this);
     }
 

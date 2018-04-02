@@ -17,7 +17,7 @@ public class CommandSubtract implements Command {
             return;
         }
         Facade.subtract();
-        Controller.updateDisplay(" - ");
+        Facade.getView().updateDisplay(" - ");
         Controller.pushComand(this);
     }
 

@@ -15,9 +15,9 @@ public class Command3 implements Command {
     public void execute() {
         Facade.updateInput("3");
         if (Facade.RemoveAnswerFromDisplay()) {
-            Controller.setDisplay("");
+            Facade.getView().setDisplay("");
         }
-        Controller.updateDisplay("3");
+        Facade.getView().updateDisplay("3");
         Controller.pushComand(this);
     }
 

@@ -17,7 +17,7 @@ public class CommandDivide implements Command {
             return;
         }
         Facade.divide();
-        Controller.updateDisplay(" ÷ ");
+        Facade.getView().updateDisplay(" ÷ ");
         Controller.pushComand(this);
     }
 

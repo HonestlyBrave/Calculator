@@ -1,18 +1,35 @@
 package model;
 
-import control.Controller;
 import java.text.DecimalFormat;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import javax.swing.JOptionPane;
 import model.operator.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import view.View;
 
 /**
  * Facade design pattern to compliment Command design pattern.
  *
  * @author Muhammad Diallo Thomas - muhammaddiallo.thomas@gmail.com
  */
+@Service("facade")
 public class Facade {
+
+    /**
+     * View Class object.
+     */
+    @Autowired
+    private static View view;
+
+    /**
+     *
+     * @return view
+     */
+    public static View getView() {
+        return view;
+    }
 
     /**
      * Main Equation for calculation using elements and operators. Elements are
@@ -44,6 +61,16 @@ public class Facade {
      * Use commas as separator and eliminate extra zeros after decimal.
      */
     private static final DecimalFormat FINE = new DecimalFormat("");
+
+    /**
+     * Constructor to inject View.
+     *
+     * @param aView
+     */
+    @Autowired
+    public Facade(View aView) {
+        view = aView;
+    }
 
     /**
      * Add a value to memory.
@@ -98,16 +125,16 @@ public class Facade {
 
         // Start of a new calculation.
         if (PRIMARY.itemListIsEmpty()) {
-            Controller.setDisplay(output);
+            view.setDisplay(output);
             return;
         }
 
         // Empty parentheses or operator.
         if (PRIMARY.anyEquationEmpty() || PRIMARY.nestedLastItemIsOperator()
                 || PRIMARY.nestedLastItemIsClosedEquation()) {
-            Controller.updateDisplay(output);
+            view.updateDisplay(output);
         } else {// Else there is a pre-existing scalar.
-            Controller.updateDisplay(" ˣ " + output);
+            view.updateDisplay(" ˣ " + output);
         }
     }
 
@@ -338,7 +365,7 @@ public class Facade {
         answer = FINE.format(PRIMARY.evaluate());
 
         // Update display with complete expression and result.
-        Controller.setDisplay(PRIMARY.toString() + " = " + answer);
+        view.setDisplay(PRIMARY.toString() + " = " + answer);
 
         // Clear main equation.
         PRIMARY = new Equation();
@@ -350,7 +377,7 @@ public class Facade {
      */
     public static void undoOperation() {
         PRIMARY = (Equation) UNDOCOMANDS.pop();
-        Controller.setDisplay(displayText);
+        view.setDisplay(displayText);
     }
 
     /**
@@ -358,7 +385,7 @@ public class Facade {
      */
     public static void undoSolve() {
         PRIMARY = (Equation) UNDOCOMANDS.pop();
-        Controller.setDisplay(displayText);
+        view.setDisplay(displayText);
     }
 
     /**
@@ -366,7 +393,7 @@ public class Facade {
      */
     public static void undoClear() {
         PRIMARY = (Equation) UNDOCOMANDS.pop();
-        Controller.setDisplay(displayText);
+        view.setDisplay(displayText);
     }
 
     /**
@@ -374,7 +401,7 @@ public class Facade {
      */
     public static void undoAddMem() {
         PRIMARY = (Equation) UNDOCOMANDS.pop();
-        Controller.setDisplay(displayText);
+        view.setDisplay(displayText);
     }
 
     /**
@@ -382,7 +409,7 @@ public class Facade {
      */
     public static void undoSubtractMem() {
         PRIMARY = (Equation) UNDOCOMANDS.pop();
-        Controller.setDisplay(displayText);
+        view.setDisplay(displayText);
     }
 
     /**
@@ -390,7 +417,7 @@ public class Facade {
      */
     public static void undoRecallMem() {
         PRIMARY = (Equation) UNDOCOMANDS.pop();
-        Controller.setDisplay(displayText);
+        view.setDisplay(displayText);
     }
 
     /**
@@ -542,7 +569,7 @@ public class Facade {
      * Synchronize machine display with user display.
      */
     private static void synchMachineDisplay() {
-        displayText = Controller.getDisplay();
+        displayText = view.getDisplay();
     }
 
     /**
@@ -563,7 +590,7 @@ public class Facade {
         int tmp = displayText.lastIndexOf("(");
         displayText = displayText.substring(0, tmp);
         displayText = displayText.concat(" ˣ ( ");
-        Controller.setDisplay(displayText);
+        view.setDisplay(displayText);
     }
 
     /**
@@ -575,7 +602,7 @@ public class Facade {
         String newinput = displayText.substring(tmp + 1);
         displayText = displayText.substring(0, tmp);
         displayText = displayText.concat(") ˣ " + newinput);
-        Controller.setDisplay(displayText);
+        view.setDisplay(displayText);
     }
 
     /**

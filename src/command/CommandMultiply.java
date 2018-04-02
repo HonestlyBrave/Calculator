@@ -17,7 +17,7 @@ public class CommandMultiply implements Command {
             return;
         }
         Facade.multiply();
-        Controller.updateDisplay(" ˣ ");
+        Facade.getView().updateDisplay(" ˣ ");
         Controller.pushComand(this);
     }
 

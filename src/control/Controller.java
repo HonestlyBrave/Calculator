@@ -3,7 +3,6 @@ package control;
 import command.Command;
 import java.util.ArrayDeque;
 import java.util.Deque;
-import model.Facade;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import view.*;
@@ -43,18 +42,6 @@ public class Controller {
         java.awt.EventQueue.invokeLater(() -> {
             UI.setFocus();
         });
-    }
-
-    /**
-     * Update display as buttons are pressed.
-     *
-     * @param number literal input
-     */
-    public static void updateDisplay(String number) {
-        if (Facade.answerNotEmpty()) {
-            UI.setDisplay(Facade.getAnswer());
-        }
-        UI.updateDisplay(number);
     }
 
     /**
