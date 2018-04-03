@@ -1,6 +1,5 @@
 package command;
 
-import control.Controller;
 import model.Facade;
 import org.springframework.stereotype.Component;
 
@@ -13,12 +12,9 @@ public class CommandMultiply implements Command {
 
     @Override
     public void execute() {
-        if (Facade.operatorNotAllowed()) {
-            return;
+        if (Facade.multiply()) {
+            Facade.pushComand(this);
         }
-        Facade.multiply();
-        Facade.getView().updateDisplay(" ˣ ");
-        Controller.pushComand(this);
     }
 
     @Override

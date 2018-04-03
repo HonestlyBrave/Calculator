@@ -218,4 +218,15 @@ public class UserInterface extends JFrame implements View {
         jtDisplayBox.setText(getDisplay() + text);
     }
 
+    @Override
+    public void undoDisplay() {
+        String text = getDisplay();
+        int textLen = text.length();
+
+        // Set empty if empty or get all characters -1(last entry).
+        String newText = text.isEmpty() ? "" : text.substring(0, textLen - 1);
+
+        setDisplay(newText);
+    }
+
 }

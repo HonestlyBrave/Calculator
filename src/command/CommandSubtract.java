@@ -1,6 +1,5 @@
 package command;
 
-import control.Controller;
 import model.Facade;
 import org.springframework.stereotype.Component;
 
@@ -13,12 +12,9 @@ public class CommandSubtract implements Command {
 
     @Override
     public void execute() {
-        if (Facade.operatorNotAllowed()) {
-            return;
+        if (Facade.subtract()) {
+            Facade.pushComand(this);
         }
-        Facade.subtract();
-        Facade.getView().updateDisplay(" - ");
-        Controller.pushComand(this);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package command;
 
-import control.Controller;
 import model.Facade;
 import org.springframework.stereotype.Component;
 
@@ -13,12 +12,9 @@ public class CommandDivide implements Command {
 
     @Override
     public void execute() {
-        if (Facade.operatorNotAllowed()) {
-            return;
+        if (Facade.divide()) {
+            Facade.pushComand(this);
         }
-        Facade.divide();
-        Facade.getView().updateDisplay(" ÷ ");
-        Controller.pushComand(this);
     }
 
     @Override

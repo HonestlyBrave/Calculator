@@ -1,6 +1,5 @@
 package command;
 
-import control.Controller;
 import model.Facade;
 import org.springframework.stereotype.Component;
 
@@ -14,16 +13,12 @@ public class Command6 implements Command {
     @Override
     public void execute() {
         Facade.updateInput("6");
-        if (Facade.RemoveAnswerFromDisplay()) {
-            Facade.getView().setDisplay("");
-        }
-        Facade.getView().updateDisplay("6");
-        Controller.pushComand(this);
+        Facade.pushComand(this);
     }
 
     @Override
     public void undo() {
-        Controller.undoDisplay();
+        Facade.undoDisplay();
     }
 
 }

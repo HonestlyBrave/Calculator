@@ -3,7 +3,7 @@ package model.operator;
 import model.Element;
 
 /**
- * Interface to unify all operators of the math composite so as to calculate two
+ * Interface for operators of the math composite with method to calculate two
  * elements with an operator.
  *
  * @author Muhammad Diallo Thomas - muhammaddiallo.thomas@gmail.com

@@ -1,6 +1,6 @@
 package listeners;
 
-import command.*;
+import command.Command;
 import java.awt.event.KeyEvent;
 import static java.awt.event.KeyEvent.*;
 import java.awt.event.KeyListener;
@@ -19,13 +19,13 @@ import utility.CommandsResource;
 public class KeyListeners implements KeyListener {
 
     /**
-     * Retrieve the Spring context.
+     * Utility class.
      */
     @Autowired
     private final CommandsResource cmdR;
 
     /**
-     * Command objects.
+     * Array of Command objects.
      */
     private final Command[] commands;
 

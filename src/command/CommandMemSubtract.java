@@ -1,6 +1,5 @@
 package command;
 
-import control.Controller;
 import model.Facade;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +13,7 @@ public class CommandMemSubtract implements Command {
     @Override
     public void execute() {
         Facade.subtractMemory();
-        Controller.pushComand(this);
+        Facade.pushComand(this);
     }
 
     @Override

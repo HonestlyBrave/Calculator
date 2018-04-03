@@ -4,7 +4,7 @@ import javax.swing.JButton;
 import org.springframework.stereotype.Service;
 
 /**
- * Utility class.
+ * Exported specific repetitive functions here.
  *
  * @author Muhammad Diallo Thomas - muhammaddiallo.thomas@gmail.com
  */

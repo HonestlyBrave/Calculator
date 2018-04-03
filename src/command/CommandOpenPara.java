@@ -1,6 +1,5 @@
 package command;
 
-import control.Controller;
 import model.Facade;
 import org.springframework.stereotype.Component;
 
@@ -13,9 +12,8 @@ public class CommandOpenPara implements Command {
 
     @Override
     public void execute() {
-        Facade.getView().updateDisplay("( ");
         Facade.openParentheses();
-        Controller.pushComand(this);
+        Facade.pushComand(this);
     }
 
     @Override

@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * Utility class. All commands in a set order in one place.
+ * All commands injected and assembled in a set order in one place.
  *
  * @author Muhammad Diallo Thomas - muhammaddiallo.thomas@gmail.com
  */
@@ -37,8 +37,9 @@ public class CommandsResource implements Utility {
     private Command cmdMemClear, cmdUndo, cmdOpenP, cmdCloseP;
 
     /**
+     * Order of commands is crucial for array index references.
      *
-     * @return array of CommandsResource
+     * @return array of Commands in set order
      */
     public Command[] getCommands() {
 

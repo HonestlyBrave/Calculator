@@ -1,7 +1,6 @@
 package command;
 
-import control.Controller;
-import javax.swing.JOptionPane;
+import model.Facade;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,12 +12,7 @@ public class CommandUndo implements Command {
 
     @Override
     public void execute() {
-        if (!Controller.getComands().isEmpty()) {
-            Controller.popComand().undo();
-        } else {
-            JOptionPane.showMessageDialog(null, "Nothing to undo.",
-                    "Invalid Operation", JOptionPane.ERROR_MESSAGE);
-        }
+        Facade.undo();
     }
 
     @Override

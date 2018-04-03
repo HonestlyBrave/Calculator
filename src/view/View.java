@@ -37,4 +37,9 @@ public interface View {
      */
     public void updateDisplay(String text);
 
+    /**
+     * Remove last character input.
+     */
+    public void undoDisplay();
+
 }

@@ -1,6 +1,6 @@
 package listeners;
 
-import command.*;
+import command.Command;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -17,13 +17,13 @@ import utility.CommandsResource;
 public class ActionListeners implements ActionListener {
 
     /**
-     * Retrieve the Spring context.
+     * Utility class.
      */
     @Autowired
     private final CommandsResource cmdR;
 
     /**
-     * Command objects.
+     * Array of Command objects.
      */
     private final Command[] commands;
 

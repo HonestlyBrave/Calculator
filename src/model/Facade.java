@@ -1,5 +1,6 @@
 package model;
 
+import command.Command;
 import java.text.DecimalFormat;
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -24,14 +25,6 @@ public class Facade {
     private static View view;
 
     /**
-     *
-     * @return view
-     */
-    public static View getView() {
-        return view;
-    }
-
-    /**
      * Main Equation for calculation using elements and operators. Elements are
      * base expressions, equations(parentheses), scalars and a singleton memory.
      */
@@ -53,7 +46,13 @@ public class Facade {
     private static String answer = "";
 
     /**
-     * Stack(LIFO) of solved and cleared objects.
+     * Stack(LIFO) of executed commands.
+     */
+    private static final Deque<Command> COMANDS = new ArrayDeque();
+
+    /**
+     * Stack(LIFO) of input, displayText, output, answers, operations, operands
+     * and item lists.
      */
     private static final Deque<Object> UNDOCOMANDS = new ArrayDeque<>();
 
@@ -165,12 +164,18 @@ public class Facade {
 
         // New primary calculation.
         PRIMARY = new Equation();
+        view.setDisplay("");
     }
 
     /**
      * Check for valid value then add operator to primary equation.
+     *
+     * @return
      */
-    public static void add() {
+    public static boolean add() {
+        if (operatorNotAllowed()) {
+            return false;
+        }
         // Save state for undo
         UNDOCOMANDS.push(PRIMARY);
 
@@ -190,17 +195,24 @@ public class Facade {
                         "You must enter a valid operand "
                         + "before choosing an operator.",
                         "Missing operand", JOptionPane.ERROR_MESSAGE);
-                return;
+                return false;
             }
         }
 
         PRIMARY.addItem(new Add());
+        view.updateDisplay(" + ");
+        return true;
     }
 
     /**
      * Check for valid value then addItem operator to ArrayList.
+     *
+     * @return
      */
-    public static void subtract() {
+    public static boolean subtract() {
+        if (operatorNotAllowed()) {
+            return false;
+        }
         // Save state for undo
         UNDOCOMANDS.push(PRIMARY);
 
@@ -220,17 +232,24 @@ public class Facade {
                         "You must enter a valid operand "
                         + "before choosing an operator.",
                         "Missing operand", JOptionPane.ERROR_MESSAGE);
-                return;
+                return false;
             }
         }
 
         PRIMARY.addItem(new Subtract());
+        view.updateDisplay(" - ");
+        return true;
     }
 
     /**
      * Check for valid value then addItem operator to ArrayList.
+     *
+     * @return
      */
-    public static void multiply() {
+    public static boolean multiply() {
+        if (operatorNotAllowed()) {
+            return false;
+        }
         // Save state for undo
         UNDOCOMANDS.push(PRIMARY);
 
@@ -250,17 +269,24 @@ public class Facade {
                         "You must enter a valid operand "
                         + "before choosing an operator.",
                         "Missing operand", JOptionPane.ERROR_MESSAGE);
-                return;
+                return false;
             }
         }
 
         PRIMARY.addItem(new Multiply());
+        view.updateDisplay(" ˣ ");
+        return true;
     }
 
     /**
      * Check for valid value then addItem operator to ArrayList.
+     *
+     * @return
      */
-    public static void divide() {
+    public static boolean divide() {
+        if (operatorNotAllowed()) {
+            return false;
+        }
         // Save state for undo
         UNDOCOMANDS.push(PRIMARY);
 
@@ -280,17 +306,20 @@ public class Facade {
                         "You must enter a valid operand "
                         + "before choosing an operator.",
                         "Missing operand", JOptionPane.ERROR_MESSAGE);
-                return;
+                return false;
             }
         }
 
         PRIMARY.addItem(new Divide());
+        view.updateDisplay(" ÷ ");
+        return true;
     }
 
     /**
      * Check for valid Scalar then add new Equation to primary Equation.
      */
     public static void openParentheses() {
+        view.updateDisplay("( ");
         // Save state for undo
         UNDOCOMANDS.push(PRIMARY);
 
@@ -314,8 +343,13 @@ public class Facade {
 
     /**
      * Check for valid Scalar then close equation.
+     *
+     * @return boolean
      */
-    public static void closeParentheses() {
+    public static boolean closeParentheses() {
+        if (cannotCloseParaNow()) {
+            return false;
+        }
         // Save state for undo
         UNDOCOMANDS.push(PRIMARY);
 
@@ -330,6 +364,8 @@ public class Facade {
         }
 
         PRIMARY.closeEquation();
+        view.updateDisplay(" )");
+        return true;
     }
 
     /**
@@ -370,6 +406,59 @@ public class Facade {
         // Clear main equation.
         PRIMARY = new Equation();
         PRIMARY.setInput("");
+    }
+
+    /**
+     * Get the executed commands collection.
+     *
+     * @return list of commands for undo operations
+     */
+    public static Deque<Command> getCOMANDS() {
+        return COMANDS;
+    }
+
+    /**
+     * Pop a command from the queue.
+     *
+     * @return a command for undo operations
+     */
+    public static Command popComand() {
+        return COMANDS.pop();
+    }
+
+    /**
+     * Push a command to the queue.
+     *
+     * @param aComand save a command for undo operations
+     */
+    public static void pushComand(Command aComand) {
+        COMANDS.push(aComand);
+    }
+
+    /**
+     * Retrieve an executed command and execute its undo method.
+     */
+    public static void undo() {
+        if (!getCOMANDS().isEmpty()) {
+            popComand().undo();
+        } else {
+            JOptionPane.showMessageDialog(null, "Nothing to undo.",
+                    "Invalid Operation", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    /**
+     * Remove the last character from input and display.
+     */
+    public static void undoDisplay() {
+        String current = PRIMARY.getInput();
+        int currentLen = current.length();
+
+        String undone = current.isEmpty() ? ""
+                : current.substring(0, currentLen - 1);
+
+        PRIMARY.setInput(undone);
+        view.undoDisplay();
     }
 
     /**
@@ -434,6 +523,10 @@ public class Facade {
      */
     public static void updateInput(String latestInput) {
         PRIMARY.updateInput(latestInput);
+        if (RemoveAnswerFromDisplay()) {
+            view.setDisplay("");
+        }
+        view.updateDisplay(latestInput);
     }
 
     /**
