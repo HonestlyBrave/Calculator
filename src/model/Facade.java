@@ -334,8 +334,8 @@ public class Facade {
                 addMultiplySignAfterLastEquation();
             }
 
-            addMultiplySignBeforeInput();
             PRIMARY.addInput();
+            addMultiplySignAfterInput();
         }
 
         PRIMARY.addItem(new Equation());
@@ -678,7 +678,7 @@ public class Facade {
     /**
      * Add literal "ˣ" to user display before parentheses.
      */
-    private static void addMultiplySignBeforeInput() {
+    private static void addMultiplySignAfterInput() {
         synchMachineDisplay();
         int tmp = displayText.lastIndexOf("(");
         displayText = displayText.substring(0, tmp);
