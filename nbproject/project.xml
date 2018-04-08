@@ -18,11 +18,5 @@
             <word>Equation's</word>
             <word>view's</word>
         </spellchecker-wordlist>
-        <spring-data xmlns="http://www.netbeans.org/ns/spring-data/1">
-            <config-files>
-                <config-file>src/main/resources/tmp.xml</config-file>
-            </config-files>
-            <config-file-groups/>
-        </spring-data>
     </configuration>
 </project>
