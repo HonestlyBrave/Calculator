@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import model.operator.*;
-import utility.Simplify;
 
 /**
  * This is the composite class which is composed of elements(Equations,
@@ -224,13 +223,13 @@ public class Equation implements Element {
         boolean check = true;
 
         while (check && EQUATIONITEMS.size() > 2) {
-            check = Simplify.calculateMultiplyDivide(EQUATIONITEMS);
+            check = calculateMultiplyDivide(EQUATIONITEMS);
         }
 
         check = true;
 
         while (check && EQUATIONITEMS.size() > 2) {
-            check = Simplify.calculateAddSubtract(EQUATIONITEMS);
+            check = calculateAddSubtract(EQUATIONITEMS);
         }
 
         return getLastElementItem().evaluate();
@@ -467,5 +466,62 @@ public class Equation implements Element {
         } else {
             getLastEquationItem().undoOperation();
         }
+    }
+
+    /**
+     * Find multiply/divide operators to calculate.
+     *
+     * @param itemList list of elements and operators to simplify
+     * @return boolean
+     */
+    private boolean calculateMultiplyDivide(List<Object> itemList) {
+        for (Object obj : itemList) {
+            if (obj.getClass().equals(Multiply.class)
+                    || obj.getClass().equals(Divide.class)) {
+                int index = itemList.indexOf(obj);
+
+                calculate(index, itemList);
+
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Find add/subtract operators to calculate.
+     *
+     * @param itemList list of elements and operators to simplify
+     * @return boolean
+     */
+    private boolean calculateAddSubtract(List<Object> itemList) {
+        for (Object obj : itemList) {
+            if (obj.getClass().equals(Add.class)
+                    || obj.getClass().equals(Subtract.class)) {
+                int index = itemList.indexOf(obj);
+
+                calculate(index, itemList);
+
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Create BaseExpression elements then update the List of objects.
+     *
+     * @param index
+     * @param list
+     */
+    private void calculate(int index, List<Object> list) {
+        BaseExpression tmp = new BaseExpression((Element) list
+                .get(index - 1), (Operator) list.get(index),
+                (Element) list.get(index + 1));
+
+        list.add(index - 1, tmp);
+        list.remove(index);
+        list.remove(index);
+        list.remove(index);
     }
 }

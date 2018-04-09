@@ -7,7 +7,7 @@ import java.util.Deque;
 import javax.swing.JOptionPane;
 import model.operator.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import view.View;
 
 /**
@@ -15,7 +15,7 @@ import view.View;
  *
  * @author Muhammad Diallo Thomas - muhammaddiallo.thomas@gmail.com
  */
-@Service("facade")
+@Component("facade")
 public class Facade {
 
     /**
@@ -23,6 +23,16 @@ public class Facade {
      */
     @Autowired
     private static View view;
+
+    /**
+     * After injecting your spring bean, use this method to set it for the
+     * model.
+     *
+     * @param aView
+     */
+    public static void setView(View aView) {
+        view = aView;
+    }
 
     /**
      * Main Equation for calculation using elements and operators. Elements are
@@ -60,16 +70,6 @@ public class Facade {
      * Use commas as separator and eliminate extra zeros after decimal.
      */
     private static final DecimalFormat FINE = new DecimalFormat("");
-
-    /**
-     * Constructor to inject View.
-     *
-     * @param aView
-     */
-    @Autowired
-    public Facade(View aView) {
-        view = aView;
-    }
 
     /**
      * Add a value to memory.
@@ -124,16 +124,16 @@ public class Facade {
 
         // Start of a new calculation.
         if (PRIMARY.itemListIsEmpty()) {
-            view.setDisplay(output);
+            setUserDisplay(output);
             return;
         }
 
         // Empty parentheses or operator.
         if (PRIMARY.anyEquationEmpty() || PRIMARY.nestedLastItemIsOperator()
                 || PRIMARY.nestedLastItemIsClosedEquation()) {
-            view.updateDisplay(output);
+            updateUserDisplay(output);
         } else {// Else there is a pre-existing scalar.
-            view.updateDisplay(" ˣ " + output);
+            updateUserDisplay(" ˣ " + output);
         }
     }
 
@@ -164,7 +164,7 @@ public class Facade {
 
         // New primary calculation.
         PRIMARY = new Equation();
-        view.setDisplay("");
+        setUserDisplay("");
     }
 
     /**
@@ -200,7 +200,7 @@ public class Facade {
         }
 
         PRIMARY.addItem(new Add());
-        view.updateDisplay(" + ");
+        updateUserDisplay(" + ");
         return true;
     }
 
@@ -237,7 +237,7 @@ public class Facade {
         }
 
         PRIMARY.addItem(new Subtract());
-        view.updateDisplay(" - ");
+        updateUserDisplay(" - ");
         return true;
     }
 
@@ -274,7 +274,7 @@ public class Facade {
         }
 
         PRIMARY.addItem(new Multiply());
-        view.updateDisplay(" ˣ ");
+        updateUserDisplay(" ˣ ");
         return true;
     }
 
@@ -311,7 +311,7 @@ public class Facade {
         }
 
         PRIMARY.addItem(new Divide());
-        view.updateDisplay(" ÷ ");
+        updateUserDisplay(" ÷ ");
         return true;
     }
 
@@ -319,7 +319,7 @@ public class Facade {
      * Check for valid Scalar then add new Equation to primary Equation.
      */
     public static void openParentheses() {
-        view.updateDisplay("( ");
+        updateUserDisplay("( ");
         // Save state for undo
         UNDOCOMANDS.push(PRIMARY);
 
@@ -364,7 +364,7 @@ public class Facade {
         }
 
         PRIMARY.closeEquation();
-        view.updateDisplay(" )");
+        updateUserDisplay(" )");
         return true;
     }
 
@@ -401,7 +401,7 @@ public class Facade {
         answer = FINE.format(PRIMARY.evaluate());
 
         // Update display with complete expression and result.
-        view.setDisplay(PRIMARY.toString() + " = " + answer);
+        setUserDisplay(PRIMARY.toString() + " = " + answer);
 
         // Clear main equation.
         PRIMARY = new Equation();
@@ -458,7 +458,7 @@ public class Facade {
                 : current.substring(0, currentLen - 1);
 
         PRIMARY.setInput(undone);
-        view.undoDisplay();
+        undoUserDisplay();
     }
 
     /**
@@ -466,7 +466,7 @@ public class Facade {
      */
     public static void undoOperation() {
         PRIMARY = (Equation) UNDOCOMANDS.pop();
-        view.setDisplay(displayText);
+        setUserDisplay(displayText);
     }
 
     /**
@@ -474,7 +474,7 @@ public class Facade {
      */
     public static void undoSolve() {
         PRIMARY = (Equation) UNDOCOMANDS.pop();
-        view.setDisplay(displayText);
+        setUserDisplay(displayText);
     }
 
     /**
@@ -482,7 +482,7 @@ public class Facade {
      */
     public static void undoClear() {
         PRIMARY = (Equation) UNDOCOMANDS.pop();
-        view.setDisplay(displayText);
+        setUserDisplay(displayText);
     }
 
     /**
@@ -490,7 +490,7 @@ public class Facade {
      */
     public static void undoAddMem() {
         PRIMARY = (Equation) UNDOCOMANDS.pop();
-        view.setDisplay(displayText);
+        setUserDisplay(displayText);
     }
 
     /**
@@ -498,7 +498,7 @@ public class Facade {
      */
     public static void undoSubtractMem() {
         PRIMARY = (Equation) UNDOCOMANDS.pop();
-        view.setDisplay(displayText);
+        setUserDisplay(displayText);
     }
 
     /**
@@ -506,7 +506,7 @@ public class Facade {
      */
     public static void undoRecallMem() {
         PRIMARY = (Equation) UNDOCOMANDS.pop();
-        view.setDisplay(displayText);
+        setUserDisplay(displayText);
     }
 
     /**
@@ -524,9 +524,9 @@ public class Facade {
     public static void updateInput(String latestInput) {
         PRIMARY.updateInput(latestInput);
         if (RemoveAnswerFromDisplay()) {
-            view.setDisplay("");
+            setUserDisplay("");
         }
-        view.updateDisplay(latestInput);
+        updateUserDisplay(latestInput);
     }
 
     /**
@@ -666,6 +666,31 @@ public class Facade {
     }
 
     /**
+     * Set user display.
+     *
+     * @param text
+     */
+    private static void setUserDisplay(String text) {
+        view.setDisplay(text);
+    }
+
+    /**
+     * Update user display.
+     *
+     * @param text
+     */
+    private static void updateUserDisplay(String text) {
+        view.updateDisplay(text);
+    }
+
+    /**
+     * Undo user display.
+     */
+    private static void undoUserDisplay() {
+        view.undoDisplay();
+    }
+
+    /**
      * Set machine view and user/machine input.
      *
      * @param text for machine display and input
@@ -683,7 +708,7 @@ public class Facade {
         int tmp = displayText.lastIndexOf("(");
         displayText = displayText.substring(0, tmp);
         displayText = displayText.concat(" ˣ ( ");
-        view.setDisplay(displayText);
+        setUserDisplay(displayText);
     }
 
     /**
@@ -695,7 +720,7 @@ public class Facade {
         String newinput = displayText.substring(tmp + 1);
         displayText = displayText.substring(0, tmp);
         displayText = displayText.concat(") ˣ " + newinput);
-        view.setDisplay(displayText);
+        setUserDisplay(displayText);
     }
 
     /**
